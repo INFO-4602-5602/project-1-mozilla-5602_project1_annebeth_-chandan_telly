@@ -1,0 +1,21 @@
+user_level,attitude,WiFi router,Laptop,Smart phone,Smart TV,Activity tracker,Smarthome hub,Car that connects to the internet,Smart thermostat,Smart appliance,Smart door lock,Smart lighting
+Average User,A little wary,24949,25858,25185,9164,1712,717,1793,470,1585,185,743
+Average User,Cautiously optimistic,16880,17055,17702,8050,1751,930,1775,519,1609,286,887
+Average User,On the fence,14168,14436,14719,5973,1206,603,1140,319,1148,156,565
+Average User,Scared as hell,3434,3926,3526,1105,217,136,218,80,243,47,122
+Average User,Super excited!,2701,2631,2779,1395,319,242,317,113,426,109,248
+Luddite,A little wary,1889,2061,1722,496,59,50,114,30,153,20,62
+Luddite,Cautiously optimistic,397,412,387,151,26,31,37,19,50,15,32
+Luddite,On the fence,535,594,499,157,29,31,50,20,64,21,27
+Luddite,Scared as hell,1026,1315,930,309,109,92,136,95,150,83,109
+Luddite,Super excited!,161,135,147,66,26,24,30,19,39,22,29
+Technically Savvy,A little wary,18855,19229,19610,8504,2405,763,1341,596,1020,245,965
+Technically Savvy,Cautiously optimistic,25548,25490,26699,14630,5339,2152,2839,1400,2446,783,2508
+Technically Savvy,On the fence,11438,11329,11945,5602,1719,595,935,403,822,173,728
+Technically Savvy,Scared as hell,2829,2998,2901,1144,312,139,196,105,169,69,160
+Technically Savvy,Super excited!,6677,6601,6975,4143,1543,894,1008,488,1160,406,1007
+Ultra Nerd,A little wary,5076,5029,5109,2324,1013,362,395,321,328,200,595
+Ultra Nerd,Cautiously optimistic,5856,5798,5926,3429,1691,820,762,632,724,391,1194
+Ultra Nerd,On the fence,1926,1896,1937,1037,431,187,211,152,172,115,298
+Ultra Nerd,Scared as hell,1506,1501,1462,636,305,160,173,139,146,118,224
+Ultra Nerd,Super excited!,3355,3177,3184,2241,1338,1004,931,770,962,710,1119
