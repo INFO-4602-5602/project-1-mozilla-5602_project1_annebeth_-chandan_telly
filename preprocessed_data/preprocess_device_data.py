@@ -1,5 +1,7 @@
 import pandas as pd
 
+from collections import defaultdict
+
 PATH_TO_DATA = "../data/20171013111831-SurveyExport.csv"
 df = pd.read_csv(PATH_TO_DATA, encoding='iso-8859-1')
 
@@ -61,8 +63,37 @@ for device in devices:
 # Drop the counts column that was created in the skeleton.
 df_devices = df_devices.drop(['counts'], axis=1)
 
-# Create a CSV for the device per user category data
-df_devices.to_csv('devices_per_user_category.csv', index=False)
+# Create a CSV for the device per user category data.
+df_devices.to_csv('temp_devices_per_user_category.csv', index=False)
 
-# Create a JSON for the user category data
-df_devices.to_json('devices_per_user_category.json', orient="records")
+# Further process the CSV to get the data into the right format.
+temp = open('temp_devices_per_user_category.csv', "r+")
+
+device_counts = defaultdict(dict)
+subgroups = []
+
+for i, line in enumerate(temp.readlines()):
+    if i == 0:
+        header = line.strip().split(",")
+        header = ["subgroup"] + header[2:]
+    else:
+        l = line.strip().split(",")
+        subgroup = l[0] + " x " + l[1]
+        subgroups.append(subgroup)
+        l = [subgroup] + l[2:]
+        line_dict = {h: l_item for h, l_item in zip(header, l)}
+        for device in devices:
+            device_counts[device][line_dict["subgroup"]] = line_dict[device]
+
+output = open('devices_per_user_category.csv', "w+")
+
+header = "device, " + ", ".join(subgroups)
+output.write(header + "\n")
+
+for device, counts in device_counts.items():
+    device_line = device
+    for subgroup in subgroups:
+        device_line += ", " + counts[subgroup]
+    output.write(device_line + "\n")
+
+output.close()

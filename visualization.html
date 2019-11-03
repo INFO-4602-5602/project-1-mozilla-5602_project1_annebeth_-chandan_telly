@@ -25,9 +25,13 @@ p {
   Lorem ipsum and other things.
 </p>
 <div id="visualization_1"></div>
+<p>
+  Lorem ipsum and other things.
+</p>
 <div id="visualization_2"></div>
 
 <script>
+  // VISUALIZATION 1: HEATMAP
   // Set up the bounds of the visualization
   var margin = { top: 20, right: 40, bottom: 30, left: 100 };
   var width = 600 - margin.right - margin.left;
@@ -35,13 +39,6 @@ p {
 
   // Set up the first SVG that gives us a canvas to draw on
   var svg_heatmap = d3.select("#visualization_1").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  // Set up the second SVG that gives us a canvas to draw on
-  var svg_barplot = d3.select("#visualization_2").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -76,6 +73,7 @@ p {
     .call(d3.axisLeft(y));
 
   // Build color scale
+  // TODO: Domain is hardcoded, replace.
   var myColor = d3.scaleLinear()
     .range(["white", "#2a5674"])
     .domain([1,32150]);
@@ -94,5 +92,77 @@ p {
         .style("fill", function(d) { return myColor(d.counts)} )
 
   })
+
+  // VISUALIZATION 2: BARPLOT
+  // Set up the bounds of the visualization
+  var margin = { top: 20, right: 20, bottom: 120, left: 100 };
+  var width = 960 - margin.right - margin.left;
+  var height = 500 - margin.top - margin.bottom;
+
+  // Set up the second SVG that gives us a canvas to draw on
+  var svg_barplot = d3.select("#visualization_2").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // Read the data
+  d3.csv("../preprocessed_data/devices_per_user_category.csv", function(data) {
+    // List of subgroups = header of the csv files = soil condition here
+    var subgroups = data.columns.slice(1);
+
+    // List of groups = species here = value of the first column called group -> I show them on the X axis
+    var groups = d3.map(data, function(d){return(d.device)}).keys();
+
+    // Add X axis
+    var x = d3.scaleBand()
+        .domain(groups)
+        .range([0, width])
+        .padding([0.2])
+    svg_barplot.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x).tickSizeOuter(0))
+      .selectAll("text")
+        .attr("transform", "translate(-10,0)rotate(-45)")
+        .style("text-anchor", "end");
+
+    // Add Y axis
+    // TODO: Domain is hardcoded, replace.
+    var y = d3.scaleLinear()
+      .domain([0, 175000])
+      .range([ height, 0 ]);
+    svg_barplot.append("g")
+      .call(d3.axisLeft(y));
+
+    // color palette = one color per subgroup
+    var color = d3.scaleOrdinal()
+      .domain(subgroups)
+      .range(["#88CCEE","#CC6677","#DDCC77","#117733",
+              "#332288","#AA4499","#44AA99","#999933",
+              "#882255","#661100","#6699CC","#888888",
+              "#66C5CC","#F6CF71","#F89C74","#DCB0F2"])
+
+    //stack the data? --> stack per subgroup
+    var stackedData = d3.stack()
+      .keys(subgroups)
+      (data)
+
+    // Show the bars
+    svg_barplot.append("g")
+      .selectAll("g")
+      // Enter in the stack data = loop key per key = group per group
+      .data(stackedData)
+      .enter().append("g")
+        .attr("fill", function(d) { return color(d.key); })
+        .selectAll("rect")
+        // enter a second time = loop subgroup per subgroup to add all rectangles
+        .data(function(d) { return d; })
+        .enter().append("rect")
+          .attr("x", function(d) { return x(d.data.device); })
+          .attr("y", function(d) { return y(d[1]); })
+          .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+          .attr("width",x.bandwidth())
+
+    })
 
 </script>
