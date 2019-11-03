@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font-family: 'Roboto Slab', 'Helvetica Neue', Helvetica, Arial, sans-serif
+}
+
+p {
+  padding: {top: 20, right: 0, bottom: 20, left: 0};
+}
+
+</style>
+
+<body>
+<!--Import the D3 Library (version 4 in this case)-->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<h1>Something about users and their devices</h1>
+<p>
+  Lorem ipsum and other things.
+</p>
+<p>
+  Lorem ipsum and other things.
+</p>
+<div id="visualization_1"></div>
+<div id="visualization_2"></div>
+
+<script>
+  // Set up the bounds of the visualization
+  var margin = { top: 20, right: 40, bottom: 30, left: 100 };
+  var width = 600 - margin.right - margin.left;
+  var height = 450 - margin.top - margin.bottom;
+
+  // Set up the first SVG that gives us a canvas to draw on
+  var svg_heatmap = d3.select("#visualization_1").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // Set up the second SVG that gives us a canvas to draw on
+  var svg_barplot = d3.select("#visualization_2").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var userLevel = ["Ultra Nerd",
+                  "Technically Savvy",
+                  "Average User",
+                  "Luddite"]
+  var userAttitude = [
+              "Scared as hell",
+              "A little wary",
+              "On the fence",
+              "Cautiously optimistic",
+              "Super excited!"]
+
+  // Build X scales and axis:
+  var x = d3.scaleBand()
+    .range([ 0, width ])
+    .domain(userAttitude)
+    .padding(0.01);
+  svg_heatmap.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+
+  // Build Y scales and axis:
+  var y = d3.scaleBand()
+    .range([ height, 0 ])
+    .domain(userLevel)
+    .padding(0.01);
+  svg_heatmap.append("g")
+    .call(d3.axisLeft(y));
+
+  // Build color scale
+  var myColor = d3.scaleLinear()
+    .range(["white", "#2a5674"])
+    .domain([1,32150]);
+
+  // Read the data
+  d3.csv("../preprocessed_data/user_categories.csv", function(data) {
+
+    svg_heatmap.selectAll()
+        .data(data, function(d) {return d.attitude+':'+d.user_level;})
+        .enter()
+        .append("rect")
+        .attr("x", function(d) { return x(d.attitude) })
+        .attr("y", function(d) { return y(d.user_level) })
+        .attr("width", x.bandwidth() )
+        .attr("height", y.bandwidth() )
+        .style("fill", function(d) { return myColor(d.counts)} )
+
+  })
+
+</script>
