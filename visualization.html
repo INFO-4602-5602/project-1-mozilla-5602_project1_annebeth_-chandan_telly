@@ -36,9 +36,8 @@ p {
   var margin = { top: 20, right: 40, bottom: 30, left: 100 };
   var width = 600 - margin.right - margin.left;
   var height = 450 - margin.top - margin.bottom;
-  var heatMapDataset = "preprocessed_data/user_categories.csv";
-  var barChartDataset ="preprocessed_data/devices_per_user_category.csv";
-  var maxCount = 0;
+  // TODO: doesn't do anything, so remove?
+  // var maxCount = 0;
 
   // Set up the first SVG that gives us a canvas to draw on
   var svg_heatmap = d3.select("#visualization_1").append("svg")
@@ -51,12 +50,12 @@ p {
                   "Technically Savvy",
                   "Average User",
                   "Luddite"]
-  var userAttitude = [
-              "Scared as hell",
-              "A little wary",
-              "On the fence",
-              "Cautiously optimistic",
-              "Super excited!"]
+
+  var userAttitude = ["Scared as hell",
+                      "A little wary",
+                      "On the fence",
+                      "Cautiously optimistic",
+                      "Super excited!"]
 
   // Build X scales and axis:
   var x = d3.scaleBand()
@@ -75,28 +74,26 @@ p {
   svg_heatmap.append("g")
     .call(d3.axisLeft(y));
 
-  // Build color scale
-  // TODO: Domain is hardcoded, replace.
-  var myColor = d3.scaleLinear()
-    .range(["white", "#2a5674"])
-    .domain([1,32150]);
-
   // Read the data
-    d3.csv(heatMapDataset, function(data) {
-    const countList = [];
+  d3.csv("preprocessed_data/user_categories.csv", function(data) {
+    // Loop through the data and convert the numeric columns to numbers
+    data.forEach(function(d){
+      d.counts = +d.counts;
+    })
 
-    data.forEach(function(item){
-      countList.push(parseInt(item.counts));
-    });
-    window.maxCount = d3.max(countList);
+    var max_counts = d3.max(data, function(d) { return d.counts; });
+
+    // // Build color scale: Annebeth
+    // var myColor = d3.scaleLinear()
+    //   .range(["white", "#2a5674"])
+    //   .domain([1,max_counts]);
 
     // Build color scale
     var colorBand = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"]
     var myColor = d3.scaleOrdinal()
-    .range(colorBand)
-    .domain([1,window.maxCount]);
+      .range(colorBand)
+      .domain([1,max_counts]);
 
-    maxCount = d3.max(data, function(d) { return d.counts; });
     svg_heatmap.selectAll()
         .data(data, function(d) {return d.attitude+':'+d.user_level;})
         .enter()
@@ -108,7 +105,7 @@ p {
         .style("fill", function(d) { return myColor(d.counts)} )
         .attr("class", function(d) { return createClassName(d.user_level, d.attitude) });
   })
- 
+
   // VISUALIZATION 2: BARPLOT
   // Set up the bounds of the visualization
   var margin = { top: 20, right: 20, bottom: 120, left: 100 };
@@ -123,7 +120,17 @@ p {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   // Read the data
-  d3.csv(barChartDataset, function(data) {
+  d3.csv("preprocessed_data/devices_per_user_category.csv", addTotals, function(data) {
+    // Loop through the data and convert the numeric columns to numbers
+    var numeric_columns = data.columns
+    numeric_columns.shift()
+
+    data.forEach(function(d){
+      numeric_columns.forEach(function(c){
+        d[c] = +d[c];
+      })
+    })
+
     // List of subgroups = header of the csv files = soil condition here
     var subgroups = data.columns.slice(1);
 
@@ -143,12 +150,8 @@ p {
         .style("text-anchor", "end");
 
     // Add Y axis
-    // TODO: Domain is hardcoded, replace.
     var y = d3.scaleLinear()
-      .domain([0, 175000])
       .range([ height, 0 ]);
-    svg_barplot.append("g")
-      .call(d3.axisLeft(y));
 
     // color palette = one color per subgroup
     // var color = d3.scaleOrdinal()
@@ -162,6 +165,11 @@ p {
     var stackedData = d3.stack()
       .keys(subgroups)
       (data)
+
+    // Set the domain for the y axis and append axis
+    y.domain([0, d3.max(data, function(d) { return d.total; })]);
+    svg_barplot.append("g")
+      .call(d3.axisLeft(y));
 
     // Show the bars
     svg_barplot.append("g")
@@ -181,18 +189,27 @@ p {
           .attr("width", x.bandwidth());
     })
 
+function addTotals(d, i, columns) {
+  for (i = 1, t = 0; i < columns.length; ++i) {
+    t += d[columns[i]] = +d[columns[i]];
+  }
+  d.total = t;
+  return d;
+}
+
 // Function for creating heatmap class names
 function createClassName(level, attitude){
   var class_name = level + "_" + attitude;
   return class_name.replace(/ /g, "_");
 }
 
-// TODO: Function to shorten the park name
+// Function to remove spaces from class names
 function fixClassName(className){
   return className.substring(1).replace(" x", "").replace(/ /g, "_");
 }
 
 // TO-DOs:
+// - update preprocessing: remove spaces from devices per user category
 // - tooltip on barplot
 // - add click on heatmap
 // - README!

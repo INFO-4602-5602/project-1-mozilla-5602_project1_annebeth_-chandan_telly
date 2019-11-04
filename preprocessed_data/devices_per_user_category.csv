@@ -1,12 +1,12 @@
-device, Average User x A little wary, Average User x Cautiously optimistic, Average User x On the fence, Average User x Scared as hell, Average User x Super excited!, Luddite x A little wary, Luddite x Cautiously optimistic, Luddite x On the fence, Luddite x Scared as hell, Luddite x Super excited!, Technically Savvy x A little wary, Technically Savvy x Cautiously optimistic, Technically Savvy x On the fence, Technically Savvy x Scared as hell, Technically Savvy x Super excited!, Ultra Nerd x A little wary, Ultra Nerd x Cautiously optimistic, Ultra Nerd x On the fence, Ultra Nerd x Scared as hell, Ultra Nerd x Super excited!
-WiFi router, 24949, 16880, 14168, 3434, 2701, 1889, 397, 535, 1026, 161, 18855, 25548, 11438, 2829, 6677, 5076, 5856, 1926, 1506, 3355
-Laptop, 25858, 17055, 14436, 3926, 2631, 2061, 412, 594, 1315, 135, 19229, 25490, 11329, 2998, 6601, 5029, 5798, 1896, 1501, 3177
-Smart phone, 25185, 17702, 14719, 3526, 2779, 1722, 387, 499, 930, 147, 19610, 26699, 11945, 2901, 6975, 5109, 5926, 1937, 1462, 3184
-Smart TV, 9164, 8050, 5973, 1105, 1395, 496, 151, 157, 309, 66, 8504, 14630, 5602, 1144, 4143, 2324, 3429, 1037, 636, 2241
-Activity tracker, 1712, 1751, 1206, 217, 319, 59, 26, 29, 109, 26, 2405, 5339, 1719, 312, 1543, 1013, 1691, 431, 305, 1338
-Smarthome hub, 717, 930, 603, 136, 242, 50, 31, 31, 92, 24, 763, 2152, 595, 139, 894, 362, 820, 187, 160, 1004
-Car that connects to the internet, 1793, 1775, 1140, 218, 317, 114, 37, 50, 136, 30, 1341, 2839, 935, 196, 1008, 395, 762, 211, 173, 931
-Smart thermostat, 470, 519, 319, 80, 113, 30, 19, 20, 95, 19, 596, 1400, 403, 105, 488, 321, 632, 152, 139, 770
-Smart appliance, 1585, 1609, 1148, 243, 426, 153, 50, 64, 150, 39, 1020, 2446, 822, 169, 1160, 328, 724, 172, 146, 962
-Smart door lock, 185, 286, 156, 47, 109, 20, 15, 21, 83, 22, 245, 783, 173, 69, 406, 200, 391, 115, 118, 710
-Smart lighting, 743, 887, 565, 122, 248, 62, 32, 27, 109, 29, 965, 2508, 728, 160, 1007, 595, 1194, 298, 224, 1119
+device,Average User x A little wary,Average User x Cautiously optimistic,Average User x On the fence,Average User x Scared as hell,Average User x Super excited!,Luddite x A little wary,Luddite x Cautiously optimistic,Luddite x On the fence,Luddite x Scared as hell,Luddite x Super excited!,Technically Savvy x A little wary,Technically Savvy x Cautiously optimistic,Technically Savvy x On the fence,Technically Savvy x Scared as hell,Technically Savvy x Super excited!,Ultra Nerd x A little wary,Ultra Nerd x Cautiously optimistic,Ultra Nerd x On the fence,Ultra Nerd x Scared as hell,Ultra Nerd x Super excited!
+WiFi router,24949,16880,14168,3434,2701,1889,397,535,1026,161,18855,25548,11438,2829,6677,5076,5856,1926,1506,3355
+Laptop,25858,17055,14436,3926,2631,2061,412,594,1315,135,19229,25490,11329,2998,6601,5029,5798,1896,1501,3177
+Smart phone,25185,17702,14719,3526,2779,1722,387,499,930,147,19610,26699,11945,2901,6975,5109,5926,1937,1462,3184
+Smart TV,9164,8050,5973,1105,1395,496,151,157,309,66,8504,14630,5602,1144,4143,2324,3429,1037,636,2241
+Activity tracker,1712,1751,1206,217,319,59,26,29,109,26,2405,5339,1719,312,1543,1013,1691,431,305,1338
+Smarthome hub,717,930,603,136,242,50,31,31,92,24,763,2152,595,139,894,362,820,187,160,1004
+Car that connects to the internet,1793,1775,1140,218,317,114,37,50,136,30,1341,2839,935,196,1008,395,762,211,173,931
+Smart thermostat,470,519,319,80,113,30,19,20,95,19,596,1400,403,105,488,321,632,152,139,770
+Smart appliance,1585,1609,1148,243,426,153,50,64,150,39,1020,2446,822,169,1160,328,724,172,146,962
+Smart door lock,185,286,156,47,109,20,15,21,83,22,245,783,173,69,406,200,391,115,118,710
+Smart lighting,743,887,565,122,248,62,32,27,109,29,965,2508,728,160,1007,595,1194,298,224,1119
