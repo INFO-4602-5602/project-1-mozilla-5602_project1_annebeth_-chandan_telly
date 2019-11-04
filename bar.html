@@ -103,123 +103,133 @@ var tooltip = d3.select("body").append("div")
 
 
 var user_level = "Average User";
-var attribute = "A little wary"
+var attribute = "A little wary";
+
+var dataArray = [23, 13, 21, 14, 37, 15, 18, 34, 30];
+
+svg.selectAll("rect")
+	.data(dataArray)
+	.enter().append("rect")
+	.attr("height", function(d, i) {return (d * 10)})
+	.attr("width", "40")
+	.attr("x", function(d, i) {return (i * 60) + 25})
+	.attr("y", function(d, i) {return 400 - (d * 10)});
 
 
 // Import the data. Most of the drawing code goes in here.
-d3.csv("preprocessed_data/devices_per_user_category.csv", function(error, data) {
-	if (error) throw error;
+// d3.csv("preprocessed_data/devices_per_user_category.csv", function(error, data) {
+// 	if (error) throw error;
 
-	data.forEach(function(d){
-		d["WiFi router"] = +d["WiFi router"];  
-	}); 
+// 	data.forEach(function(d){
+// 		d["WiFi router"] = +d["WiFi router"];  
+// 	}); 
 
-	var xMin = d3.min(data, function(d){return d["WiFi router"]}); 
-	var xMax = d3.max(data, function(d){return d["WiFi router"]}); 
-	x.domain([xMin, xMax]).nice(); 
+// 	var xMin = d3.min(data, function(d){return d["WiFi router"]}); 
+// 	var xMax = d3.max(data, function(d){return d["WiFi router"]}); 
+// 	x.domain([xMin, xMax]).nice(); 
 
 
-	// create a histgram 
-	// https://bl.ocks.org/santiagogaray/e203193d9a8ba21be9a25b797880ac71
-	var histogram = d3.histogram()
-					.value(function(d) { return d.Year; })
-					.domain(x.domain())
-					.thresholds(10); 
+// 	// create a histgram 
+// 	// https://bl.ocks.org/santiagogaray/e203193d9a8ba21be9a25b797880ac71
+// 	var histogram = d3.histogram()
+// 					.value(function(d) { return d.Year; })
+// 					.domain(x.domain())
+// 					.thresholds(10); 
 	
-	var bins = histogram(data); 
+// 	var bins = histogram(data); 
 
-	var yMin = 0; 
-	var yMax = d3.max(bins, function(d){return d.length}); 
-	y.domain([yMin, d3.max(bins, function(d){ return d.length; })]); 
+// 	var yMin = 0; 
+// 	var yMax = d3.max(bins, function(d){return d.length}); 
+// 	y.domain([yMin, d3.max(bins, function(d){ return d.length; })]); 
 
-	// color of the bar chart 
-	var color = "steelblue";
-	// create x axis 
-	svg.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + height + ")")
-		.call(xAxis); 
+// 	// color of the bar chart 
+// 	var color = "steelblue";
+// 	// create x axis 
+// 	svg.append("g")
+// 		.attr("class", "x axis")
+// 		.attr("transform", "translate(0," + height + ")")
+// 		.call(xAxis); 
 
-	 svg.append("text")
-            .attr("text-anchor", "middle") 
-            .attr("transform", "translate("+ (width/2) +","+(height+(35))+")") 
-            .text("Year");
+// 	 svg.append("text")
+//             .attr("text-anchor", "middle") 
+//             .attr("transform", "translate("+ (width/2) +","+(height+(35))+")") 
+//             .text("Year");
 
-	// create y axis 
-	svg.append("g")
-	   .attr("class", "y axis")
-	   .call(yAxis)
+// 	// create y axis 
+// 	svg.append("g")
+// 	   .attr("class", "y axis")
+// 	   .call(yAxis)
 
-	svg.append("text")
-            .attr("text-anchor", "middle")  
-            .attr("transform", "translate("+ (-25) +","+(height/2)+")rotate(-90)") 
-            .text("Count");
+// 	svg.append("text")
+//             .attr("text-anchor", "middle")  
+//             .attr("transform", "translate("+ (-25) +","+(height/2)+")rotate(-90)") 
+//             .text("Count");
 
-   	var div = d3.select("body").append("div")
-		.attr("class", "tooltip")
-		.style("opacity", 0);
+//    	var div = d3.select("body").append("div")
+// 		.attr("class", "tooltip")
+// 		.style("opacity", 0);
 
-	// add bar for each 
-	var bar = svg.selectAll(".bar")
-	 		.data(bins)
-		.enter().append("g")
-			.attr("class", "bar")
-			.attr("transform", function(d) {
-				return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
+// 	// add bar for each 
+// 	var bar = svg.selectAll(".bar")
+// 	 		.data(bins)
+// 		.enter().append("g")
+// 			.attr("class", "bar")
+// 			.attr("transform", function(d) {
+// 				return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
 
 
-	//// adding text to each bar 
-	// bar.append("text") 
-	// 	// .attr("dy", ".em")
-	// 	.attr("y", 0)
-	// 	.attr("x", (x(bins[0].x1) - x(bins[0].x0)) / 2)
-	// 	.attr("id", function(d, i){return i;})
-	// 	.attr("text-anchor", "middle")
-	// 	.attr("class", "text")
-	// 	.text(function(d) { return formatCount(d.length); })
-	// 	.style("opacity", 1)
-	// 	.attr('font-size', 15);
+// 	//// adding text to each bar 
+// 	// bar.append("text") 
+// 	// 	// .attr("dy", ".em")
+// 	// 	.attr("y", 0)
+// 	// 	.attr("x", (x(bins[0].x1) - x(bins[0].x0)) / 2)
+// 	// 	.attr("id", function(d, i){return i;})
+// 	// 	.attr("text-anchor", "middle")
+// 	// 	.attr("class", "text")
+// 	// 	.text(function(d) { return formatCount(d.length); })
+// 	// 	.style("opacity", 1)
+// 	// 	.attr('font-size', 15);
 
-	// create bar charts 
-	bar.append("rect")
-			.attr("x", 1)
-			.attr("width", function(d) { return x(d.x1) - x(d.x0) - 1.5; })
-			.attr("height", function(d) { return height - y(d.length); })
-			.attr("fill", function(d) { 
-				if( d.length == yMax){
-					return d3.rgb(color).darker(1);
-				} else {
-					return d3.rgb(color).brighter(1);
-				}
-	  		})
-		  	.on("mouseover", function(d){
+// 	// create bar charts 
+// 	bar.append("rect")
+// 			.attr("x", 1)
+// 			.attr("width", function(d) { return x(d.x1) - x(d.x0) - 1.5; })
+// 			.attr("height", function(d) { return height - y(d.length); })
+// 			.attr("fill", function(d) { 
+// 				if( d.length == yMax){
+// 					return d3.rgb(color).darker(1);
+// 				} else {
+// 					return d3.rgb(color).brighter(1);
+// 				}
+// 	  		})
+// 		  	.on("mouseover", function(d){
 
-		  		// show the tooltip 
-				tooltip.transition()
-						.duration(500)
-						.style("opacity", 1); 
+// 		  		// show the tooltip 
+// 				tooltip.transition()
+// 						.duration(500)
+// 						.style("opacity", 1); 
 
-				// contents of the tooltip 
-				tooltip.html(d.x0 + " - " + d.x1 + ": " + d.length)
-						.style("left", (d3.event.pageX) + "px") 
-						.style("top", (d3.event.pageY) + "px"); 
+// 				// contents of the tooltip 
+// 				tooltip.html(d.x0 + " - " + d.x1 + ": " + d.length)
+// 						.style("left", (d3.event.pageX) + "px") 
+// 						.style("top", (d3.event.pageY) + "px"); 
 
-	  		})
-		  	.on("mouseout", function(d){
-	  				d3.select(this)
-			  		.transition()
-              		.duration(550)
-              		.attr("fill", function(d) { 
-              			// change the color back when the mouseis out 
-						return (d.length == yMax) ? d3.rgb(color).darker(1): d3.rgb(color).brighter(1);
-					}); 
+// 	  		})
+// 		  	.on("mouseout", function(d){
+// 	  				d3.select(this)
+// 			  		.transition()
+//               		.duration(550)
+//               		.attr("fill", function(d) { 
+//               			// change the color back when the mouseis out 
+// 						return (d.length == yMax) ? d3.rgb(color).darker(1): d3.rgb(color).brighter(1);
+// 					}); 
 
-              		// hide tooltops 
-					tooltip.transition()
-						.duration(500)
-						.style("opacity", 0); 
-             });	
-}); 
+//               		// hide tooltops 
+// 					tooltip.transition()
+// 						.duration(500)
+// 						.style("opacity", 0); 
+//              });	
+// }); 
 
 
 </script>
