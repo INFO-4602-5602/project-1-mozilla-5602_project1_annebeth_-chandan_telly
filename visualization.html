@@ -23,14 +23,28 @@ p {
 
 <h1>Something about users and their devices</h1>
 <p>
-  Lorem ipsum and other things.
+  We are almost there! Now we just have to do some final cleaning up and making things look good.
+</br>
+  TO-DOs:
+  <ul>
+    <li> Update preprocessing: remove spaces from devices per user category [Annebeth]
+    <li> Writing the README [Annebeth]
+    <li> Add some more comments to the code [Annebeth]
+    <li> Styling of the visualizations? For example, fonts on plots, label size, etc. [Nishank?]
+    <li> In the tooltips on the barplot, instead of just the simple count, show the percentage
+      of users (in other words, the value of the bar segment divided by the value of the associated
+      square in the heatmap.
+    <li> Clean up the Github folder.
+  </ul>
 </p>
 <p>
   Lorem ipsum and other things.
 </p>
 <div id="visualization_1"></div>
 <p>
-  Lorem ipsum and other things.
+  Click on a square in the heatmap to see the associated user counts in the
+  barplot. Click the same square again to go back to the barplot with overall
+  counts.
 </p>
 <div id="visualization_2"></div>
 
@@ -84,13 +98,13 @@ p {
     })
 
     // create a tooltip
-    var tooltip = d3.select("#visualization_1")
+    var tooltip_heatmap = d3.select("#visualization_1")
       .append("div")
       .style("opacity", 0)
       .attr("class", "tooltip")
       .style("background-color", "white")
       .style("border", "solid")
-      .style("border-width", "2px")
+      .style("border-width", "1px")
       .style("border-radius", "5px")
       .style("padding", "5px")
       .style("width", "80px")
@@ -99,19 +113,19 @@ p {
 
     // Three function that change the tooltip when user hover / move / leave a cell
     var mouseover = function(d) {
-      tooltip.style("opacity", 1)
+      tooltip_heatmap.style("opacity", 1)
       d3.select(this)
         .style("stroke", "black")
         .style("opacity", 1)
     }
     var mousemove = function(d) {
-      tooltip
+      tooltip_heatmap
         .html(d.counts + " users")
         .style("left", (d3.mouse(this)[0]+50) + "px")
-        .style("top", (d3.mouse(this)[1]+50) + "px")
+        .style("top", (d3.mouse(this)[1]+150) + "px")
     }
     var mouseleave = function(d) {
-      tooltip.style("opacity", 0)
+      tooltip_heatmap.style("opacity", 0)
       d3.select(this)
         .style("stroke", "none")
         .style("opacity", 0.8)
@@ -194,6 +208,39 @@ p {
     var y = d3.scaleLinear()
       .range([ height, 0 ]);
 
+    var tooltip_barplot = d3.select("#visualization_2")
+      .append("div")
+      .style("opacity", 0)
+      .attr("class", "tooltip")
+      .style("background-color", "white")
+      .style("border", "solid")
+      .style("border-width", "1px")
+      .style("border-radius", "5px")
+      .style("padding", "5px")
+      .style("position", "absolute")
+
+    // Three function that change the tooltip when user hover / move / leave a cell
+    var mouseover_bar = function(d) {
+      if (typeof selectedClass != 'undefined') {
+        var subgroupName = d3.select(this.parentNode).datum().key;
+        if (fixClassName(subgroupName) == selectedClass) {
+          var subgroupValue = d.data[subgroupName];
+          tooltip_barplot
+              .html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
+              .style("opacity", 1)
+        }
+      }
+    }
+    var mousemove_bar = function(d) {
+      tooltip_barplot
+        .style("left", (d3.mouse(this)[0]+50) + "px")
+        .style("top", (d3.mouse(this)[1]+750) + "px")
+    }
+    var mouseleave_bar = function(d) {
+      tooltip_barplot
+        .style("opacity", 0)
+    }
+
     // color palette = one color per subgroup
     // var color = d3.scaleOrdinal()
     //   .domain(subgroups)
@@ -227,7 +274,10 @@ p {
           .attr("x", function(d) { return x(d.data.device); })
           .attr("y", function(d) { return y(d[1]); })
           .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-          .attr("width", x.bandwidth());
+          .attr("width", x.bandwidth())
+        .on("mouseover", mouseover_bar)
+        .on("mousemove", mousemove_bar)
+        .on("mouseleave", mouseleave_bar);
     })
 
 function addTotals(d, i, columns) {
@@ -273,8 +323,7 @@ function fixClassName(className){
 }
 
 // TO-DOs:
-// - update preprocessing: remove spaces from devices per user category
-// - tooltip on barplot
+// -
 // - README!
 
 </script>
