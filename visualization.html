@@ -90,7 +90,7 @@ p {
         .attr("width", x.bandwidth() )
         .attr("height", y.bandwidth() )
         .style("fill", function(d) { return myColor(d.counts)} )
-
+        .attr("class", function(d) { return createClassName(d.user_level, d.attitude) });
   })
 
   // VISUALIZATION 2: BARPLOT
@@ -135,12 +135,12 @@ p {
       .call(d3.axisLeft(y));
 
     // color palette = one color per subgroup
-    var color = d3.scaleOrdinal()
-      .domain(subgroups)
-      .range(["#88CCEE","#CC6677","#DDCC77","#117733",
-              "#332288","#AA4499","#44AA99","#999933",
-              "#882255","#661100","#6699CC","#888888",
-              "#66C5CC","#F6CF71","#F89C74","#DCB0F2"])
+    // var color = d3.scaleOrdinal()
+    //   .domain(subgroups)
+    //   .range(["#88CCEE","#CC6677","#DDCC77","#117733",
+    //           "#332288","#AA4499","#44AA99","#999933",
+    //           "#882255","#661100","#6699CC","#888888",
+    //           "#66C5CC","#F6CF71","#F89C74","#DCB0F2"])
 
     //stack the data? --> stack per subgroup
     var stackedData = d3.stack()
@@ -153,7 +153,8 @@ p {
       // Enter in the stack data = loop key per key = group per group
       .data(stackedData)
       .enter().append("g")
-        .attr("fill", function(d) { return color(d.key); })
+        .attr("fill", "#CC6677") // function(d) { return color(d.key); })
+        .attr("class", function(d){ return fixClassName(d.key) })
         .selectAll("rect")
         // enter a second time = loop subgroup per subgroup to add all rectangles
         .data(function(d) { return d; })
@@ -161,8 +162,23 @@ p {
           .attr("x", function(d) { return x(d.data.device); })
           .attr("y", function(d) { return y(d[1]); })
           .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-          .attr("width",x.bandwidth())
-
+          .attr("width", x.bandwidth());
     })
+
+// Function for creating heatmap class names
+function createClassName(level, attitude){
+  var class_name = level + "_" + attitude;
+  return class_name.replace(/ /g, "_");
+}
+
+// TODO: Function to shorten the park name
+function fixClassName(className){
+  return className.substring(1).replace(" x", "").replace(/ /g, "_");
+}
+
+// TO-DOs:
+// - tooltip on barplot
+// - add click on heatmap
+// - README!
 
 </script>
