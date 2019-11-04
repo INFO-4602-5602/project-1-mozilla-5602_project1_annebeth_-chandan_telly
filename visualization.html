@@ -32,6 +32,8 @@ p {
   var margin = { top: 20, right: 40, bottom: 30, left: 100 };
   var width = 600 - margin.right - margin.left;
   var height = 450 - margin.top - margin.bottom;
+  var dataset = "preprocessed_data/user_categories.csv";
+  var maxCount = 0;
 
   // Set up the first SVG that gives us a canvas to draw on
   var svg_heatmap = d3.select("#visualization_1").append("svg")
@@ -75,14 +77,24 @@ p {
   svg_heatmap.append("g")
     .call(d3.axisLeft(y));
 
-  // Build color scale
-  var myColor = d3.scaleLinear()
-    .range(["white", "#2a5674"])
-    .domain([1,32150]);
-
   // Read the data
-  d3.csv("../preprocessed_data/user_categories.csv", function(data) {
+  var heatmapChart = function(csvFile) 
+  {
+    d3.csv(csvFile, function(data) {
+    const countList = [];
 
+    data.forEach(function(item){
+      countList.push(parseInt(item.counts));
+    });
+    window.maxCount = d3.max(countList);
+
+    // Build color scale
+    var colorBand = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"]
+    var myColor = d3.scaleOrdinal()
+    .range(colorBand)
+    .domain([1,window.maxCount]);
+
+    maxCount = d3.max(data, function(d) { return d.counts; });
     svg_heatmap.selectAll()
         .data(data, function(d) {return d.attitude+':'+d.user_level;})
         .enter()
@@ -94,5 +106,8 @@ p {
         .style("fill", function(d) { return myColor(d.counts)} )
 
   })
+  };
 
+  heatmapChart(dataset);
+ 
 </script>
