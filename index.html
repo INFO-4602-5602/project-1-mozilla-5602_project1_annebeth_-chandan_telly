@@ -256,7 +256,7 @@
           var subgroupUserAttitude = subgroupName.split(" x ")[1];
           var percentage = Math.round((subgroupValue/heatmap_tooltip_value) * 100);
           tooltip_barplot
-            .html(percentage + '% of "' + subgroupUserLevel + '" feeling "' + subgroupUserAttitude + '" owns a ' + d.data.device)
+            .html(percentage + '% of "' + subgroupUserLevel + '" feeling "' + subgroupUserAttitude + '" own a ' + d.data.device)
             .style("opacity", 1)
         }
       }
