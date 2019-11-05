@@ -87,13 +87,13 @@ for i, line in enumerate(temp.readlines()):
 
 output = open('devices_per_user_category.csv', "w+")
 
-header = "device, " + ", ".join(subgroups)
+header = "device," + ",".join(subgroups)
 output.write(header + "\n")
 
 for device, counts in device_counts.items():
     device_line = device
     for subgroup in subgroups:
-        device_line += ", " + counts[subgroup]
+        device_line += "," + counts[subgroup]
     output.write(device_line + "\n")
 
 output.close()
