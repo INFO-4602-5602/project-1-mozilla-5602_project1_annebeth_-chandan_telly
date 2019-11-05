@@ -83,7 +83,7 @@
     // VISUALIZATION 1: HEATMAP
     // Set up the bounds of the visualization
     var margin = { top: 20, right: 40, bottom: 60, left: 130 };
-    var width = 900 - margin.right - margin.left;
+    var width = 980 - margin.right - margin.left;
     var height = 550 - margin.top - margin.bottom;
 
     // Set up the first SVG that gives us a canvas to draw on
@@ -198,7 +198,7 @@
     // VISUALIZATION 2: BARPLOT
     // Set up the bounds of the visualization
     var margin = { top: 20, right: 20, bottom: 200, left: 100 };
-    var width = 960 - margin.right - margin.left;
+    var width = 920 - margin.right - margin.left;
     var height = 600 - margin.top - margin.bottom;
 
     // Set up the second SVG that gives us a canvas to draw on
@@ -284,10 +284,11 @@
       // color palette = one color per subgroup
       var color = d3.scaleOrdinal()
         .domain(subgroups)
-        .range(["#88CCEE", "#CC6677", "#DDCC77", "#117733",
-          "#332288", "#AA4499", "#44AA99", "#999933",
-          "#882255", "#661100", "#6699CC", "#888888",
-          "#66C5CC", "#F6CF71", "#F89C74", "#DCB0F2"])
+        .range(["#1abc9c", "#2ecc71", "#3498db", "#9b59b6",
+          "#34495e", "#16a085", "#2980b9", "#8e44ad",
+          "#2c3e50", "#f1c40f", "#e67e22", "#e74c3c",
+          "#e84393", "#f39c12", "#d35400", "#f3a683",
+          "#f53b57", "#00d8d6", "#fad390", "#BDC581"])
 
       //stack the data? --> stack per subgroup
       var stackedData = d3.stack()
