@@ -31,8 +31,7 @@ about which internet user types are most common.
 
 The second visualization is a stacked barplot that - for a number of internet connected devices like routers, smart phones, but also smart door locks - shows the total number of users that own that device. Each of the individual rectangles in the stacked bar represents the number of users that owns the device for one of the user groups defined in the heatmap. This visualization answers the question: for each subtype of users, how many of them use certain devices?
 
-TODO: How the visualizations are connected through interaction.
-First, click on heatmap.
+The two visualizations are connected through interaction. Clicking on any of the squares on the heatmap shows that subgroup of users highlighted in the stacked barplot. The tooltip on these highlighted items shows which percentage of users in the selected subgroup uses a particular device. The heatmap also has a small tooltip that shows how many users are in each subgroup.
 
 ## Implementation
 #### Preprocessing
@@ -42,11 +41,16 @@ Both the heatmap and the stacked barplot require a different type of access to t
 
 [preprocess_device_data.py](https://github.com/INFO-4602-5602/project-1-mozilla-5602_project1_annebeth_-chandan_telly/blob/master/preprocessed_data/preprocess_device_data.py) is used to preprocess the stacked barplot data. It creates a new csv file that has the user subgroups (for example: *Average User x A little wary*) as columns and the devices as rows. Each integer then represents the number of users in a subgroup owning a certain device.
 
-#### Main visualizations
-TODO
-
 #### Interaction
-TODO: but something how classes are used to tie the two visualizations together.
+The interaction in the visualizations consists of two types of components:
+1. Tooltips and
+2. A click that connects the heatmap to the barplot
+
+With the tooltips, we tried to add information that was not obvious from the visualization itself. For example, in the heatmap, it is clear which groups have higher values, but it is not possible to retrieve the exact values. Because of that, we added a tooltip with this information. The tooltip for the barplot is a little bit more complex: instead of showing the exact value of devices owned per group, it shows the percentage of people in that group owning a device. Since the group sizes are so dissimilar, this gives much more insightful information. For example, even though the Ultra Nerds only represent a very small number of respondents (and therefore only small "slices" in the stacked barchart) more than 90% of them owns a router - independent of whether they are feeling "Scared as hell" or "Super excited". Note: the tooltips are only visible for selected subgroups, so not for the initial/total barplot.
+
+Clicking on any of the squares in the heatmap triggers the selection of that subgroup in the stacked bar chart. This emphasizes the connection between the two visualizations and lets a user of the visualization do interesting tasks like seeing which kind of users own which kinds of devices. For example: do people who feel scared about internet connectedness generally own less smart devices?
+
+The connection between the heatmap and the barplot is made through the use of classes that represent the groups of users (e.g., Average Users who feel A little wary). On the click on the heatmap, the class of that square (e.g.,".Average_User_A_little_wary") is used to update the barplot to highlight the parts of the stack with the same class attached to it.
 
 ## Design process and roles
 Our design process consisted of the following steps. All of the steps that do not mention a specific group member where done by the whole group.
