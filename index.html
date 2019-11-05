@@ -12,26 +12,12 @@
 
   p {
     padding: {top: 20, right: 0, bottom: 20, left: 0};
-    text-align: center;
+    margin-left: 100px;
+    margin-right: 100px;
   }
 
   ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-  }
-
-  li {
-    float: left;
-  }
-
-  li a {
-    display: block;
-    color: 282828;
-    text-align: center;
-    padding: 16px;
-    text-decoration: none;
+    margin-left: 120px;
   }
 
   h1 {
@@ -54,17 +40,33 @@
   <script src="//d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
 
   <h1><em>Technically savvy, but a little wary...</em></h1>
-  <h2>visualizing types of users and the devices they own</h2>
+  <h2>visualizing types of users and the devices they own.</h2>
   <p>
-    Lorem ipsum
+    A <a href="https://www.surveygizmo.com/s3/3643927/091fb5d9e0e1">recent survey by Mozilla</a> asked respondents: "how
+    connected are you?". They were asked to select their level of experience with technology: <em>Luddite/Very little experience</em>,
+    <em>Average User</em>, <em>Technically Savvy</em> and <em>Ultra Nerd</em>. The respondents were also asked which of the following
+    options best matched their feelings about a future in which so much of their world is connected to the internet:
+    <ul>
+      <li> <em>Super excited!</em> I can’t wait for everything to be connected. My life will be so much better.
+      <li> <em>Cautiously optimistic.</em> I’m hopeful we’re building a better world by becoming more connected in everything we do.
+      <li> <em>On the fence.</em> I’m not sure about all this. I think I’ll wait and see.
+      <li> <em>A little wary.</em> All this being connected to the internet in every part of our lives makes me a little nervous. What’s going to happen to our privacy?
+      <li> <em>Scared as hell.</em> The future where everything is connected has me scared senseless. We’re all doomed!
+    </ul>
+  </p>
+  <p>
+    The visualization below shows the groups that can be created by combining those two categories of respondents. For example, the group of Ultra Nerds
+    that are "Scared as hell" or the group of Average Users, who are feeling "Super excited!". The color of the square represents
+    the number of people in a group: the darker, the bigger the group. Moving your mouse over any of the squares, will show the exact number of respondents in the group.
   </p>
   <center>
     <div id="visualization_1"></div>
   </center>
   <p>
-    Click on a square in the heatmap to see the associated user counts in the
-    barplot. Click the same square again to go back to the barplot with overall
-    counts.
+    The respondents also filled out which internet connected devices they currently own. The bars in the barplot below show
+    the total number of respondents owning a particular device. However, if you click on a group of respondents in the first
+    visualization (i.e., any of the squares), you will be able to see which percentage of the respondents in that group owns the device.
+    Click on any of the parts of the bars that is not selected to go back to the total.
   </p>
   <center>
     <div id="visualization_2"></div>
@@ -144,9 +146,9 @@
     }
     var mousemove = function (d) {
       tooltip_heatmap
-        .html(d.counts + " users")
+        .html(d.counts + " respondents")
         .style("left", (d3.mouse(this)[0] + 150) + "px")
-        .style("top", (d3.mouse(this)[1] + 150) + "px")
+        .style("top", (d3.mouse(this)[1] + 350) + "px")
     }
     var mouseleave = function (d) {
       tooltip_heatmap.style("opacity", 0)
@@ -250,9 +252,11 @@
         var subgroupName = d3.select(this.parentNode).datum().key;
         if (fixClassName(subgroupName) == selectedClass) {
           var subgroupValue = d.data[subgroupName];
+          var subgroupUserLevel = subgroupName.split(" x ")[0];
+          var subgroupUserAttitude = subgroupName.split(" x ")[1];
           var percentage = Math.round((subgroupValue/heatmap_tooltip_value) * 100);
           tooltip_barplot
-            .html(percentage + "% of " + subgroupName)
+            .html(percentage + '% of "' + subgroupUserLevel + '" feeling "' + subgroupUserAttitude + '" owns a ' + d.data.device)
             .style("opacity", 1)
         }
       }
@@ -260,7 +264,7 @@
     var mousemove_bar = function (d) {
       tooltip_barplot
         .style("left", (d3.mouse(this)[0] + 50) + "px")
-        .style("top", (d3.mouse(this)[1] + 750) + "px")
+        .style("top", (d3.mouse(this)[1] + 1000) + "px")
     }
     var mouseleave_bar = function (d) {
       tooltip_barplot
@@ -301,10 +305,11 @@
         .attr("y", function (d) { return y(d[1]); })
         .attr("height", function (d) { return y(d[0]) - y(d[1]); })
         .attr("width", x.bandwidth())
-        .style("stroke", "grey")
+        .style("stroke", "white")
       .on("mouseover", mouseover_bar)
       .on("mousemove", mousemove_bar)
-      .on("mouseleave", mouseleave_bar);
+      .on("mouseleave", mouseleave_bar)
+      .on("click", barplotClick);
   })
 
 function addTotals(d, i, columns) {
@@ -317,25 +322,24 @@ function addTotals(d, i, columns) {
 
 // With click, set a class that will be used in the second visualization.
 function click() {
-  if (typeof selectedClass == 'undefined') {
-    barplotSelectUpdate(this);
-  } else if (selectedClass == this.className.baseVal) {
-    selectedClass = undefined;
-    d3.selectAll(".bar-rect").style("opacity", 1);
-  } else {
-    barplotSelectUpdate(this);
-  }
-}
-
-function barplotSelectUpdate(click_elem) {
-  selectedClass = click_elem.className.baseVal;
-  heatmap_tooltip_value = parseInt(d3.select("#heatmap_tooltip").text().replace(" users", ""));
+  selectedClass = this.className.baseVal;
+  heatmap_tooltip_value = parseInt(d3.select("#heatmap_tooltip").text().replace(" respondents", ""));
 
   // Reduce opacity of all rect to 0.1
   d3.selectAll(".bar-rect").style("opacity", 0.1)
   // Highlight all rects of this subgroup with opacity 0.8. It is possible to select them since they have a specific class = their name.
   d3.selectAll("." + selectedClass)
     .style("opacity", 1)
+}
+
+// With a click on the barplot, restore barplot.
+function barplotClick() {
+  if (typeof selectedClass != 'undefined') {
+    if (selectedClass != this.className.baseVal) {
+      selectedClass = undefined;
+      d3.selectAll(".bar-rect").style("opacity", 1);
+    }
+  }
 }
 
 // Function for creating heatmap class names
