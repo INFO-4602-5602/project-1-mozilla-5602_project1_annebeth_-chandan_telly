@@ -1,6 +1,6 @@
 # Project description
 
-## Overview:
+## Overview
 These two visualizations aim at giving insight into internet users and how their
 level of comfort with technology and their attitude towards an internet-connected future
 relates to the devices they own.
@@ -34,13 +34,21 @@ The second visualization is a stacked barplot that - for a number of internet co
 TODO: How the visualizations are connected through interaction.
 First, click on heatmap.
 
-## Implementation:
-#### Preprocessing:
-#### Main visualizations:
-#### Interaction:
-Information about your visualizations and what they show. Include information about interactions, preprocesses, and design as appropriate. Note what tasks the visualization allows you to accomplish to derive this insight and how your design is tailored to support these tasks.
+## Implementation
+#### Preprocessing
+Both the heatmap and the stacked barplot require a different type of access to the data  than, for example, a simple scatterplot. Because of that, we preprocessed the data using two different scripts.
 
-## Design process and roles:
+[preprocess_user_data.py](https://github.com/INFO-4602-5602/project-1-mozilla-5602_project1_annebeth_-chandan_telly/blob/master/preprocessed_data/preprocess_user_data.py) is used to preprocess the heatmap data. It takes the columns from the original csv and calculates how many of the survey takers are in each of the user subgroups (for example: *Average User x A little wary*).
+
+[preprocess_device_data.py](https://github.com/INFO-4602-5602/project-1-mozilla-5602_project1_annebeth_-chandan_telly/blob/master/preprocessed_data/preprocess_device_data.py) is used to preprocess the stacked barplot data. It creates a new csv file that has the user subgroups (for example: *Average User x A little wary*) as columns and the devices as rows. Each integer then represents the number of users in a subgroup owning a certain device.
+
+#### Main visualizations
+TODO
+
+#### Interaction
+TODO: but something how classes are used to tie the two visualizations together.
+
+## Design process and roles
 Our design process consisted of the following steps. All of the steps that do not mention a specific group member where done by the whole group.
 
 1. An initial brainstorming meeting in which we familiarized ourselves with the data and came up with possible visualizations and tasks.
@@ -51,14 +59,14 @@ Our design process consisted of the following steps. All of the steps that do no
   - Initial code for heatmap. [Chandan]
   - Initial code for barplot. [Tetsumichi]
 5. Combining the code and adding interaction. [Annebeth]
-6. Review and discussion of changes.
+6. Review and discussion of further changes.
 
 Our choice for these visualizations was guided by the choice for the heatmap, with which we could relate two columns of categorical data on user types. Based on that, we thought about other interesting tasks with which to combine the subgroups of users. That is how we decided on the (simple) barplot for the second visualization: the numeric data here gives even more information about the people in the user subgroups.
 
-## Running the project:
+## Running the project
 This project can be run in the browser by cloning the Github project or by downloading the zipped folder. Although the visualizations depend on preprocessed data, that data is available in the folder [preprocessed_data](https://github.com/INFO-4602-5602/project-1-mozilla-5602_project1_annebeth_-chandan_telly/tree/master/preprocessed_data). By using the project folder as the root folder and running a server (for example: `python -m SimpleHTTPServer`), the visualizations should be visible on [localhost](http://localhost:8000/).
 
-## Sources:
+## Sources
 To implement this project, we looked at various sources. Below is a link to the sources and a short description of which part of the source were used:
 
 - An overview of how to create a basic heatmap: https://www.d3-graph-gallery.com/graph/heatmap_basic.html.
